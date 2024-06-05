@@ -7,4 +7,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Hashing\" />
+    <Folder Include="DigitalSign\" />
+  </ItemGroup>
+
 </Project>
