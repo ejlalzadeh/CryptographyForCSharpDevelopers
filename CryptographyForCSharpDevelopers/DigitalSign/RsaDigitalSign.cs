@@ -47,4 +47,23 @@ public class RsaDigitalSign
 
         return Convert.ToBase64String(signedHash);
     }
+
+    public static bool VerifyPem(string originalData, string signedData, string publicKeyPem)
+    {
+        using RSA rsa = RSA.Create();
+        rsa.ImportFromPem(publicKeyPem);
+
+        RSAPKCS1SignatureDeformatter deFormatter = new(rsa);
+        deFormatter.SetHashAlgorithm(HashAlgorithmName.SHA256.ToString());
+
+        return deFormatter.VerifySignature(Hashing.Hashing.GenerateSha256Hash(originalData), Convert.FromBase64String(signedData));
+    }
+
+    public static bool VerifyPemPure(string originalData, string signedData, string publicKeyPem)
+    {
+        using RSA rsa = RSA.Create();
+        rsa.ImportFromPem(publicKeyPem);
+
+        return rsa.VerifyData(Encoding.UTF8.GetBytes(originalData), Convert.FromBase64String(signedData), HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+    }
 }
