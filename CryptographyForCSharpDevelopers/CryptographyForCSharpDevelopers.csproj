@@ -8,8 +8,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Hashing\" />
     <Folder Include="DigitalSign\" />
+    <Folder Include="Keys\" />
+    <Folder Include="HMAC\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Keys\encryptedPrivateKey.pem">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Keys\privateKey.pem">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Keys\publicKey.pem">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
