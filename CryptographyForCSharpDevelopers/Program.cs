@@ -2,6 +2,7 @@
 using CryptographyForCSharpDevelopers.DigitalSign;
 using CryptographyForCSharpDevelopers.Hashing;
 using CryptographyForCSharpDevelopers.HMAC;
+using CryptographyForCSharpDevelopers.Symmetric;
 
 static void Print(string title, string data) => Console.WriteLine($"{title}\n{data}\n");
 string dataToSign = "Cando";
@@ -33,3 +34,10 @@ Print(nameof(Hmac.GenerateHmacSha256), Hmac.GenerateHmacSha256("Lhwed&lQpl", dat
 
 //Hashing
 Print(nameof(SHA256), Hashing.GenerateSha256HashString(dataToSign));
+
+
+//AES
+
+string aesEncrypted = AesCryptography.Encrypt(dataToSign, "1234567891011121");
+Print(nameof(AesCryptography.Encrypt), aesEncrypted);
+Print(nameof(AesCryptography.Decrypt), AesCryptography.Decrypt(aesEncrypted, "1234567891011121"));
