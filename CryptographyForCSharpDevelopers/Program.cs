@@ -48,5 +48,5 @@ Print(nameof(AesCryptography.Decrypt), AesCryptography.Decrypt(aesEncrypted, "Qb
 string rsaEncrypted = RsaCryptography.Encrypt(dataToSign, File.ReadAllText("./Keys/publicKey.pem"));
 Print(nameof(RsaCryptography.Encrypt), rsaEncrypted);
 
-string rsaDecrypted = RsaCryptography.Encrypt(dataToSign, File.ReadAllText("./Keys/privateKey.pem"));
+string rsaDecrypted = RsaCryptography.Decrypt(rsaEncrypted, File.ReadAllText("./Keys/privateKey.pem"));
 Print(nameof(RsaCryptography.Decrypt), rsaDecrypted);

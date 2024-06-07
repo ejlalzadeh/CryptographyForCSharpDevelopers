@@ -5,21 +5,21 @@ namespace CryptographyForCSharpDevelopers.Asymmetric;
 
 public class RsaCryptography
 {
-    public static string Encrypt(string data, string publicKey)
+    public static string Encrypt(string plainText, string publicKey)
     {
         RSA rsa = RSA.Create();
         rsa.ImportFromPem(publicKey);
-        byte[] cipherBytes = rsa.Encrypt(Encoding.UTF8.GetBytes(data), RSAEncryptionPadding.Pkcs1);
+        byte[] cipherBytes = rsa.Encrypt(Encoding.UTF8.GetBytes(plainText), RSAEncryptionPadding.Pkcs1);
 
         return Convert.ToBase64String(cipherBytes);
     }
 
-    public static string Decrypt(string data, string privateKey)
+    public static string Decrypt(string cipherText, string privateKey)
     {
         RSA rsa = RSA.Create();
-        rsa.ImportRSAPrivateKey(Encoding.ASCII.GetBytes(privateKey), out _);
-        byte[] plainTextBytes = rsa.Decrypt(Encoding.UTF8.GetBytes(data), RSAEncryptionPadding.Pkcs1);
+        rsa.ImportFromPem(privateKey);
+        byte[] plainTextBytes = rsa.Decrypt(Convert.FromBase64String(cipherText), RSAEncryptionPadding.Pkcs1);
 
-        return Convert.ToBase64String(plainTextBytes);
+        return Encoding.Default.GetString(plainTextBytes);
     }
 }
