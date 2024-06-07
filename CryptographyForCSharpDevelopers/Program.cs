@@ -37,7 +37,6 @@ Print(nameof(SHA256), Hashing.GenerateSha256HashString(dataToSign));
 
 
 //AES
-
-string aesEncrypted = AesCryptography.Encrypt(dataToSign, "1234567891011121");
+string aesEncrypted = AesCryptography.Encrypt(dataToSign, "QbGdMd018Vg24mpf0JkTg4SGSKDJHuHA");
 Print(nameof(AesCryptography.Encrypt), aesEncrypted);
-Print(nameof(AesCryptography.Decrypt), AesCryptography.Decrypt(aesEncrypted, "1234567891011121"));
+Print(nameof(AesCryptography.Decrypt), AesCryptography.Decrypt(aesEncrypted, "QbGdMd018Vg24mpf0JkTg4SGSKDJHuHA"));
