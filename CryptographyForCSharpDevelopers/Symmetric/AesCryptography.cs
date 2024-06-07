@@ -1,23 +1,24 @@
-﻿using System.Security.Cryptography;
-using System.Text;
+﻿using System.Text;
+using System.Security.Cryptography;
 
 namespace CryptographyForCSharpDevelopers.Symmetric;
 
 public class AesCryptography
 {
-    public static string Decrypt(string cipherText, string primaryKey, string? secondaryKey = null)
+    public static string Decrypt(string cipherText, string key, string? iv = null)
     {
-        byte[] iv = new byte[16];
+        byte[] cipherTextBytes = Convert.FromBase64String(cipherText);
 
-        if (!string.IsNullOrWhiteSpace(secondaryKey))
-            iv = Encoding.ASCII.GetBytes(secondaryKey);
-
-        byte[] buffer = Convert.FromBase64String(cipherText);
         using (Aes aes = Aes.Create())
         {
-            aes.Key = Encoding.UTF8.GetBytes(primaryKey); aes.IV = iv;
+            aes.Key = Encoding.UTF8.GetBytes(key);
+            aes.IV = string.IsNullOrWhiteSpace(iv)
+                ? new byte[16]
+                : Encoding.ASCII.GetBytes(iv);
+
             ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
-            using (MemoryStream memoryStream = new MemoryStream(buffer))
+
+            using (MemoryStream memoryStream = new MemoryStream(cipherTextBytes))
             {
                 using (CryptoStream cryptoStream = new CryptoStream((Stream)memoryStream, decryptor, CryptoStreamMode.Read))
                 {
@@ -30,19 +31,19 @@ public class AesCryptography
         }
     }
 
-    public static string Encrypt(string plainText, string primaryKey, string? secondaryKey = null)
+    public static string Encrypt(string plainText, string key, string? iv = null)
     {
-        byte[] iv = new byte[16];
+        byte[] cipherTextBytes;
 
-        if (!string.IsNullOrWhiteSpace(secondaryKey))
-            iv = Encoding.ASCII.GetBytes(secondaryKey);
-
-        byte[] array;
         using (Aes aes = Aes.Create())
         {
-            aes.Key = Encoding.UTF8.GetBytes(primaryKey);
-            aes.IV = iv;
+            aes.Key = Encoding.UTF8.GetBytes(key);
+            aes.IV = string.IsNullOrWhiteSpace(iv)
+                ? new byte[16]
+                : Encoding.ASCII.GetBytes(iv);
+
             ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
+
             using (MemoryStream memoryStream = new MemoryStream())
             {
                 using (CryptoStream cryptoStream = new CryptoStream((Stream)memoryStream, encryptor, CryptoStreamMode.Write))
@@ -51,10 +52,12 @@ public class AesCryptography
                     {
                         streamWriter.Write(plainText);
                     }
-                    array = memoryStream.ToArray();
+
+                    cipherTextBytes = memoryStream.ToArray();
                 }
             }
         }
-        return Convert.ToBase64String(array);
+
+        return Convert.ToBase64String(cipherTextBytes);
     }
 }
