@@ -1,4 +1,5 @@
 ﻿using System.Security.Cryptography;
+using CryptographyForCSharpDevelopers.Asymmetric;
 using CryptographyForCSharpDevelopers.DigitalSign;
 using CryptographyForCSharpDevelopers.Hashing;
 using CryptographyForCSharpDevelopers.HMAC;
@@ -40,3 +41,12 @@ Print(nameof(SHA256), Hashing.GenerateSha256HashString(dataToSign));
 string aesEncrypted = AesCryptography.Encrypt(dataToSign, "QbGdMd018Vg24mpf0JkTg4SGSKDJHuHA");
 Print(nameof(AesCryptography.Encrypt), aesEncrypted);
 Print(nameof(AesCryptography.Decrypt), AesCryptography.Decrypt(aesEncrypted, "QbGdMd018Vg24mpf0JkTg4SGSKDJHuHA"));
+
+
+
+//RSA
+string rsaEncrypted = RsaCryptography.Encrypt(dataToSign, File.ReadAllText("./Keys/publicKey.pem"));
+Print(nameof(RsaCryptography.Encrypt), rsaEncrypted);
+
+string rsaDecrypted = RsaCryptography.Encrypt(dataToSign, File.ReadAllText("./Keys/privateKey.pem"));
+Print(nameof(RsaCryptography.Decrypt), rsaDecrypted);
